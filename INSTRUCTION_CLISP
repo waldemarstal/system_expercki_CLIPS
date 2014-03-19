@@ -1,0 +1,143 @@
+
+--------------------------
+ASSERT, DEFRULE, PRINT
+--------------------------
+(assert (ma zwierzak wlosy))
+(defrule byc (ma ?x wlosy) =>
+           (assert (jest ?x ssakiem))
+           (printout t "it’s a " ?x crlf))
+
+
+--------------------------
+DEFACTS
+--------------------------
+(deffacts startup (animal dog) (animal duck) (animal haddock))
+
+
+--------------------------
+VARIABLES
+--------------------------
+?
+?x
+
+
+--------------------------
+OPERATIONS
+--------------------------
+(rules) (facts) (agenda)
+(clear) 		czyści reguły i fakty
+(reset)			czyści fakty
+
+
+--------------------------
+RETRACT of INDEX
+--------------------------
+(defrule remove-mammals
+  ?fact <- (mammal ?)
+  =>
+  (printout t "retracting " ?fact crlf)
+  (retract ?fact)
+)
+
+
+--------------------------
+OR
+--------------------------
+(defrule take-umbrella
+  (or (weather raining)
+      (weather snowing))
+  =>
+  (assert (umbrella required)))
+
+
+--------------------------
+NOT, READ, WILLCARD PATERN
+--------------------------
+(defrule test (not (ma ? futro)) =>
+        (printout t "co ma?")
+        (assert (ma wielgus (read))))
+
+(member-of beatles john_lennon paul_mccartney george_harrison ringo_starr)
+
+(defrule addup
+  (number ?x)
+  (number ?y)
+=>
+  (bind ?total (+ ?x ?y))
+  (printout t ?x " + " ?y " = " ?total crlf)
+  (assert (total ?total)))
+
+
+--------------------------
+GLOBAL VARIABLES
+--------------------------
+(defglobal
+  ?*var1* = 17
+  ?*oranges* = "seven"
+)
+
+
+--------------------------
+DEFTEMPLATE with DEFFACTS
+--------------------------
+(deftemplate personal-data
+	(slot name)
+	(slot age)
+	(slot weight)
+	(slot height)
+	(multislot blood-pressure)
+)
+
+(assert (personal-data (name Andrew) (age 20) (weight 80) 
+	(height 188) (blood-pressure 130 80)))
+
+
+(deffacts people
+	(personal-data (name Andrew) (age 20) (weight 80) 
+		(height 188) (blood-pressure 130 80))
+	(personal-data (name Cyril) (age 63) (weight 70)
+		(height 1678) (blood-pressure 180 90)))
+
+(deftemplate (slot slotname1) (slot slotname1))
+ (and (predicate1) (predicate2))
+ (or (predicate1) (predicate2))
+ (not (predicate1))
+ (test (predicate1))
+ (exists (pattern))
+ (forall (pattern1))
+
+
+
+--------------------------
+NTH
+--------------------------
+ new function in this rule is nth$, which returns a single value at a given position in a multifield variable. So, if we had a variable ?a which had the multiple value (dog cat fish), then (nth$ 2 ?a) would return the value (fish)
+
+
+
+--------------------------
+LOOP
+--------------------------
+(loop-for-count (?suit 1 4) do
+	; code
+)
+
+
+--------------------------
+CASE
+--------------------------
+(deffunction card-value
+	(?card-name)
+	(switch ?card-name
+		(case ace then (bind ?return-value 1))
+		...
+		(case king then (bind ?return-value 10))
+		(default (bind ?return-value 0))
+	)
+	(return ?return-value
+
+
+--------------------------
+CASE
+--------------------------
+(> 2 ?x)
